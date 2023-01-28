@@ -1,0 +1,16 @@
+{
+  "name": "handler",
+  "version": "1.0.0",
+  "description": "A handler for discord bots in version 14 with Typescript",
+  "main": "out/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node .",
+    "build:start": "npm run build && npm run start"
+  },
+  "author": "NewGlace",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.3.0"
+  }
+}
