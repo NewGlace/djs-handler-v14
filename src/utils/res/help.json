@@ -1,0 +1,12 @@
+{
+    "__1": "# Name of the order folders displayed in the help #",
+    "category": {
+        "tests": {
+            "name": "Test category",
+            "emoji": "🐛"
+        }
+    },
+
+    "__2": "# Name of the folders to ignore from the help #",
+    "igonre": ["developers"]
+}
