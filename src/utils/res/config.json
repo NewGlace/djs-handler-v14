@@ -1,0 +1,14 @@
+{
+	"dev" : {
+		"__1": "# Your Dev Token #",
+		"token": "XXXXXXXXXX.XXXXXXXXXXXXXXXXXXXXXXX.XXXXXXXXXXXXXXXX"
+	},
+	"master" : {
+		"__1": "# Your master Token #",
+		"token": "XXXXXXXXXX.XXXXXXXXXXXXXXXXXXXXXXX.XXXXXXXXXXXXXXXX"
+	}, 
+
+	"__1": "# Bot in development (false/true) #",
+	"inDev": true,
+	"embedColor": "0xDCFCFF"
+}
