@@ -1,71 +1,57 @@
-import { HandlerType, HandlerInteractionType, Permission} from '../types';
+import { HandlerType, HandlerInteractionType, DataInteraction} from '../typings';
 import { ClientEvents, ChatInputApplicationCommandData, UserApplicationCommandData } from "discord.js"
 import { BotClient } from './';
 
+type InteractionRunFunction<Type extends HandlerType | keyof ClientEvents> = (
+	Type extends HandlerType ? (client: BotClient, interaction: HandlerInteractionType[Type]) => any : 
+	(Type extends keyof ClientEvents ? (client: BotClient, ...options: ClientEvents[Type]) => any : 
+	() => any)
+)
+
 export class HandlerInteraction<Type extends HandlerType | keyof ClientEvents> {
-	// We get the name of the event or interaction 
-	name!: Type extends keyof ClientEvents ? Type : string;
+	name: string;
+
+	permissions?: DataInteraction["permissions"];
+	cooldown?: DataInteraction["cooldown"];
+	maintenance?: boolean;
+
+	run?: InteractionRunFunction<Type>;
+	data?: Type extends HandlerType.Commands ? ChatInputApplicationCommandData : 
+		   Type extends HandlerType.ContextMenu ? UserApplicationCommandData : 
+	       undefined;
 
 	/**
-	* 3 arrow functions: 
-	* - the first one for interactions.
-	* - the second one for events. 
-	* - the third one for if you forgot something.
-	*/
-	run!: ( Type extends HandlerType ? (client: BotClient, interaction: HandlerInteractionType[Type]) => any : 
-		  ( Type extends keyof ClientEvents ? (client: BotClient, ...options: ClientEvents[Type]) => any : 
-		  () => any));
-
-	// The permissions 
-	permissions?: Permission;
-
-	// More data for commands, context menu
-	data!: Type extends HandlerType.Commands ? ChatInputApplicationCommandData : undefined;
-
+	 * @param value The value has **4 types** depending on the interaction 
+	 * - `Events` - A string with the name of an event as value
+	 * - `HandlerType.Commands` - An object with the value *ChatInputApplicationCommandData*
+	 * - `HandlerType.ContextMenu ` - An object with the value *UserApplicationCommandData*
+	 * - `HandlerType` - A string with value the name of the interaction
+	 * 
+	 * @param run The function of interaction 
+	 * @param data -
+	 * - `permissions` User/bot permissions for interraction
+	 * - `cooldown` Time between 2 interactions
+	 * - `maintenance` interaction maintenance?
+	 */
 	constructor(
-			/**
-			 * The value has 4 options:
-			 * - event name
-			 * - commands data
-			 * - context menu data
-			 * - interaction name
-			 */
 			value: Type extends keyof ClientEvents ? Type : 
 			Type extends HandlerType.Commands ? ChatInputApplicationCommandData : 
 			Type extends HandlerType.ContextMenu ? UserApplicationCommandData : 
-			string, 
-
-			/**
-			 * 3 arrow functions: 
-			 * - the first one for interactions.
-			 * - the second one for events. 
-			 * - the third one for if you forgot something.
-			 */
-			run?: ( Type extends HandlerType ? (client: BotClient, interaction: HandlerInteractionType[Type]) => any : 
-				  ( Type extends keyof ClientEvents ? (client: BotClient, ...options: ClientEvents[Type]) => any : 
-				  () => any)), 
-
-			// The permissions 
-			permissions?: Permission
+			string,
+			run?: InteractionRunFunction<Type>, 
+			data?: DataInteraction
 		) {
 			
-		if (typeof(value) == "string") {
-			(<string>this.name) = value;
-			(<undefined>this.data) = undefined;
-		} else {
-			(<string>this.name) = value.name;
-			(<ChatInputApplicationCommandData | UserApplicationCommandData>this.data) = value;
+		if (typeof(value) == "string") 
+			this.name = value;
+		else {
+			this.name = value.name;
+			this.data = <any>value;
 		}
 
-		(<any>this.run) = run;
-		this.permissions = permissions;
+		this.run = run;
+		this.permissions = data?.permissions;
+		this.maintenance = data?.maintenance;
+		this.cooldown = data?.cooldown;
 	}
 }
-
-/*
- *         Credits          
- * Made by : NewGlace 🧊#2408
- * Support Server : https://discord.gg/6pnDcSs
- * If this handler helped you, don't forget the little ⭐
- * 
- */

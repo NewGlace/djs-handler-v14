@@ -29,58 +29,88 @@ const colors = {
 } as const;
 
 type ColorList = keyof typeof colors;
-
 export class Console {
     static #numberTest = 0;
 
-    // Method to keep only 2 values (time visual)
-    static #twoValue(value: string|number, number: number = 2) {
-        return (("0".repeat(number)) + String(value)).slice(number * -1);
+    /** 
+     * @private 
+     * method to display a number with a given number of characters 
+     * @param number The number to modify
+     * @param count The number of characters
+     * @example
+     * this.#numberDisplay (49, 3)
+     * // return "049"
+     */
+    static #numberFormat(number: string|number, count: number = 2) {
+        return (("0".repeat(count)) + String(number)).slice(count * -1);
     }
-
-    // Method to generate the time display
+    /** 
+     * @private 
+     * Method to generate the time display
+     * @param color1 Other value color
+     * @param color2 Alphanumeric value color
+     */
     static #time(color1: string, color2: string) {
         const date = new Date();
-        return `${color1}[ ${color2}${this.#twoValue(date.getDate())}${color1}/${color2}${this.#twoValue(date.getMonth()+1)}${color1}/${color2}${date.getFullYear()} ${color1}| ${color2}${this.#twoValue(date.getHours())}${color1}:${color2}${this.#twoValue(date.getMinutes())}${color1}:${color2}${this.#twoValue(date.getSeconds())}${color1}.${color2}${this.#twoValue(date.getMilliseconds(), 3)} ${color1}]${colors.FgWhite}`;
+        return `${color1}[ ${color2}${this.#numberFormat(date.getDate())}${color1}/${color2}${this.#numberFormat(date.getMonth()+1)}${color1}/${color2}${date.getFullYear()} ${color1}| ${color2}${this.#numberFormat(date.getHours())}${color1}:${color2}${this.#numberFormat(date.getMinutes())}${color1}:${color2}${this.#numberFormat(date.getSeconds())}${color1}.${color2}${this.#numberFormat(date.getMilliseconds(), 3)} ${color1}]${colors.FgWhite}`;
     }
-
-    // Method to generate the title display
+    /** 
+     * @private 
+     * Method to generate the title display
+     * @param color1 Other value color
+     * @param color2 Alphanumeric value color
+     * @param title Console line title
+     */
     static #title(color1: string, color2: string, title: string) {
         return `${color1}[ ${color2}${colors.bright}${title.toUpperCase()}${colors.reset} ${color1}]${colors.FgWhite}`
     }
 
-    // Untitled console
-    static log(...value: any) {
-        console.log(this.#time(colors.FgYellow, colors.FgCyan), ...value);
+    /** 
+     * @param values Value displayed in the console
+     * @alphanumericColor Foreground Cyan 
+     * @otherColor Foreground Yellow
+     */
+    static log(...values: any) {
+        console.log(this.#time(colors.FgYellow, colors.FgCyan), ...values);
     }
 
-    // console for error
-    static error(...value: any) {
-        console.log(this.#time(colors.FgYellow, colors.FgRed), this.#title(colors.FgYellow, colors.FgRed, "Error"), ...value);
+    /** 
+     * @param values Value displayed in the error console
+     * @alphanumericColor Foreground Red 
+     * @otherColor Foreground Yellow
+     */
+    static error(...values: any) {
+        console.error(this.#time(colors.FgYellow, colors.FgRed), this.#title(colors.FgYellow, colors.FgRed, "Error"), ...values);
     }
 
-    // console with title
-    static info(title: string, ...value: any) {
-        console.log(this.#time(colors.FgYellow, colors.FgCyan), this.#title(colors.FgYellow, colors.FgCyan, title), ...value);
+    /** 
+     * @param title Console line title
+     * @param values Value displayed in the console
+     * @alphanumericColor Foreground Cyan 
+     * @otherColor Foreground Yellow
+     */
+    static info(title: string, ...values: any) {
+        console.log(this.#time(colors.FgYellow, colors.FgCyan), this.#title(colors.FgYellow, colors.FgCyan, title), ...values);
     }    
     
-    // console for test with an auto counter
-    static test(...value: any) {
+    /** 
+     * @param values Value displayed in the console
+     * @alphanumericColor Foreground Magenta 
+     * @otherColor Foreground Yellow
+     */
+    static test(...values: any) {
         this.#numberTest++;
-        console.log(this.#time(colors.FgYellow, colors.FgMagenta), this.#title(colors.FgYellow, colors.FgMagenta, `Test N°${this.#numberTest}`), ...value);
+        console.log(this.#time(colors.FgYellow, colors.FgMagenta), this.#title(colors.FgYellow, colors.FgMagenta, `Test N°${this.#numberTest}`), ...values);
     }
 
-    // equivalent to the info console but with a choice of colors
-    static custom(color1: ColorList, color2: ColorList, title: string|undefined, ...value: any) {
-        if (title) console.log(this.#time(colors[color1], colors[color2]), this.#title(colors[color1], colors[color2], title), ...value);
-        else console.log(this.#time(colors[color1], colors[color2]), ...value);
+    /** 
+     * @param color1 Other value color
+     * @param color2 Alphanumeric value color
+     * @param title Console line title
+     * @param values Value displayed in the console
+     */
+    static custom(color1: ColorList, color2: ColorList, title: string|undefined, ...values: any) {
+        if (title) console.log(this.#time(colors[color1], colors[color2]), this.#title(colors[color1], colors[color2], title), ...values);
+        else console.log(this.#time(colors[color1], colors[color2]), ...values);
     }
 }
-
-/*
- *         Credits          
- * Made by : NewGlace 🧊#2408
- * Support Server : https://discord.gg/6pnDcSs
- * If this handler helped you, don't forget the little ⭐
- * 
- */
