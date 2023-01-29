@@ -1,0 +1,10 @@
+{
+    "category": {
+        "info": {
+            "name": "Info",
+            "emoji": "🐛"
+        }
+    },
+
+    "ignore": ["developers"]
+}

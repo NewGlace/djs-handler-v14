@@ -1,0 +1,22 @@
+{
+	"dev" : {
+		"token": "NjMwMDQwMTA2ODM2ODE5OTc5.GkKZK1.X18aS2U6AqXMgNS3RmCArr9qvvVTcWYNNzjmM8"
+	},
+	"master" : {
+		"token": "The master bot token, not to be divulged!"
+	}, 
+
+	"inDev": true,
+	"embedColor": "0xDCFCFF",
+
+	"developers": [
+		{ "owner": true, "githubId": "NewGlace", "discordId": "528340380064677891" }
+	],
+
+	"emojis": {
+		"maintenance": {
+			"true": "🔴",
+			"false": "🟢"
+		}
+	}
+}
